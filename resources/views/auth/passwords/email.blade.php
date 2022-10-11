@@ -25,17 +25,17 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Request new password</button>
+            <button type="submit" class="btn common__btn btn-block">Request new password</button>
         </div>
         <!-- /.col -->
     </div>
 </form>
 
 <p class="mt-3 mb-1">
-    <a href="{{ route('login') }}">Login</a>
+    <a href="{{ route('login') }}" class="common__text">Login</a>
 </p>
 <p class="mb-0">
-    <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
+    <a href="{{ route('register') }}" class="text-center common__text">Register a new membership</a>
 </p>
 
 @endsection

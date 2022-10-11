@@ -28,10 +28,41 @@ a:hover{
     background: #cfac80;
     color: #fff;
 }
+.common__text,.common__text:hover{
+    color: #cfac80;
+}
 body {
     font-family: Nunito-Regular !important;
 }
-
+.form-control:focus,.login-card-body .input-group .form-control:focus~.input-group-append .input-group-text, .login-card-body .input-group .form-control:focus~.input-group-prepend .input-group-text, .register-card-body .input-group .form-control:focus~.input-group-append .input-group-text, .register-card-body .input-group .form-control:focus~.input-group-prepend .input-group-text{
+    border-color: #cfac80;
+}
+.auth__body{
+    background-color: #8b6260;
+}
+.auth__body .navbar{
+    background-color: #8b6260;
+}
+.auth__body .navbar .brand-link span,
+.auth__body .navbar-light .navbar-nav .nav-link{
+    color: #fff;
+}
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgb(183 141 94 / 18%);
+}
+/*********** Login  - Register - Page **************/
+.login-page, 
+.register-page{
+    background-color: #8b6260 !important;
+}
+.login-card-body .input-group .input-group-text, .register-card-body .input-group .input-group-text{
+    color: #8b6260;
+}
+.login-logo a, .register-logo a{
+    display: block;
+    color: #fff;
+    text-transform: uppercase;
+}
 .main-sidebar {
     background: #FFFFFF;
     box-shadow: none !important;
