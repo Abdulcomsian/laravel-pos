@@ -3,14 +3,14 @@
 @section('title', 'Customer List')
 @section('content-header', 'Customer List')
 @section('content-actions')
-    <a href="{{route('customers.create')}}" class="btn btn-primary">Add Customer</a>
+    <a href="{{route('customers.create')}}" class="btn common__btn">Add Customer</a>
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 @section('content')
-    <div class="card">
-        <div class="card-body">
+ 
+        <div class="common__table table-responsive">
             <table class="table">
                 <thead>
                 <tr>
@@ -50,7 +50,7 @@
             </table>
             {{ $customers->render() }}
         </div>
-    </div>
+ 
 @endsection
 
 @section('js')

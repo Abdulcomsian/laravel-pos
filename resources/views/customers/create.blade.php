@@ -4,9 +4,7 @@
 @section('content-header', 'Create Customer')
 
 @section('content')
-
-    <div class="card">
-        <div class="card-body">
+        <div class="common__table">
 
             <form action="{{ route('customers.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -83,10 +81,10 @@
                 </div>
 
 
-                <button class="btn btn-primary" type="submit">Create</button>
+                <button class="btn common__btn" type="submit">Create</button>
             </form>
         </div>
-    </div>
+
 @endsection
 
 @section('js')

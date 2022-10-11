@@ -3,15 +3,17 @@
 @section('title', 'Orders List')
 @section('content-header', 'Order List')
 @section('content-actions')
-    <a href="{{route('cart.index')}}" class="btn btn-primary">Open POS</a>
+    <a href="{{route('cart.index')}}" class="btn common__btn">Open POS</a>
 @endsection
 
 @section('content')
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-7"></div>
-            <div class="col-md-5">
+
+       
+        <div class="common__table">
+       <div class="container">
+       <div class="row mb-4">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
                 <form action="{{route('orders.index')}}">
                     <div class="row">
                         <div class="col-md-5">
@@ -21,13 +23,15 @@
                             <input type="date" name="end_date" class="form-control" value="{{request('end_date')}}" />
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-outline-primary" type="submit">Submit</button>
+                            <button class="btn common__btn" type="submit">Submit</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <table class="table">
+       </div>
+       <div class="table-responsive">
+       <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -74,8 +78,11 @@
                 </tr>
             </tfoot>
         </table>
+       </div>
+        
+        </div>
+        
         {{ $orders->render() }}
-    </div>
-</div>
+
 @endsection
 

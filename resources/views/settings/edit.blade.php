@@ -4,8 +4,8 @@
 @section('content-header', 'Update Settings')
 
 @section('content')
-<div class="card">
-    <div class="card-body">
+
+    <div class="common__table">
         <form action="{{ route('settings.store') }}" method="post">
             @csrf
 
@@ -47,8 +47,8 @@
                 </span>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-primary">Change Setting</button>
+            <button type="submit" class="btn common__btn">Change Setting</button>
         </form>
     </div>
-</div>
+
 @endsection

@@ -1,0 +1,294 @@
+@font-face {
+    font-family: Nunito-light;
+    src: url(../fonts/Nuntio/Nunito-Light.ttf);
+}
+
+@font-face {
+    font-family: Nunito-Regular;
+    src: url(../fonts/Nuntio/Nunito-Regular.ttf);
+}
+
+@font-face {
+    font-family: Nunito-Medium;
+    src: url(../fonts/Nuntio/Nunito-Medium.ttf);
+}
+
+@font-face {
+    font-family: Nunito-Bold;
+    src: url(../fonts/Nuntio/Nunito-Bold.ttf);
+}
+a:hover{
+    text-decoration: none;
+}
+.btn:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.common__btn{
+    background: #cfac80;
+    color: #fff;
+}
+body {
+    font-family: Nunito-Regular !important;
+}
+
+.main-sidebar {
+    background: #FFFFFF;
+    box-shadow: none !important;
+    margin-bottom: 10%;
+}
+
+.navbar-white,
+[class*=sidebar-dark] .brand-link {
+    border-bottom: 1px solid #e9ecef;
+}
+
+[class*=sidebar-dark] .user-panel {
+    border: none;
+}
+
+.sidebar {
+    padding: 20px;
+}
+
+.nav-sidebar>.nav-item {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.nav-sidebar>.nav-item a,
+.nav-sidebar>.nav-item:hover a {
+    width: 100% !important;
+    font-size: 15px;
+    font-weight: 500;
+    color: #637381 !important;
+}
+
+.nav-sidebar>.nav-item:hover a img,
+.nav-sidebar>.nav-item .active img {
+    filter: brightness(0) invert(1);
+}
+
+.nav-sidebar>.nav-item .active,
+.nav-sidebar>.nav-item:hover a {
+    background-color: #8b6260 !important;
+    border-radius: 5px;
+    color: #fff !important;
+}
+.brand-text{
+    color: #8b6260;
+    text-transform: uppercase;
+}
+.side__bar__top a {
+    display: block;
+    width: 100%;
+    height: 57px;
+}
+
+span.menu-arrow:before {
+    content: "\f105";
+    font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    font-size: 18px;
+    line-height: 18px;
+    position: absolute;
+    top: 12px;
+    right: 15px;
+}
+
+.navbar-badge {
+    right: 0px;
+    top: 0px;
+    border-radius: 100% !important;
+    width: 20px;
+    height: 20px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background-color: #cfac80;
+    color: #fff;
+}
+.user__img{
+    display: inline-block;
+    position: relative;
+}
+.user__img .status{
+    border: 2px solid #fff;
+    height: 10px;
+    width: 10px;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    bottom: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    background: #28C76F;
+}
+.user__img img{
+    width: 38px;
+    border-radius: 50%;
+}
+.profilename .profileset {
+    padding: 10px 10px 3px;
+    display: flex;
+}
+.profilename .profileset .profilesets {
+    margin-left: 10px;
+}
+.profilename .profileset h6 {
+    font-size: 14px;
+    color: #212B36;
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+.profilename .profileset h5 {
+    font-size: 14px;
+    color: #637381;
+}
+.profilename hr {
+    background-color: #E8EBED;
+    opacity: 1;
+}
+.header .menu-drop-user .dropdown-item {
+    color: #637381;
+    padding: 7px 10px !important;
+}
+.header .menu-drop-user .dropdown-item svg {
+    stroke-width: 1px;
+    width: 18px;
+}
+li.dropdown:hover .menu-drop-user{
+    display: block !important;
+    left: initial;
+    right: 12px;
+}
+.menu-drop-user{
+    position: absolute;
+    left: initial;
+    right: 12px;
+    background-color: #fff;
+    box-shadow: 0 0 15px 0 rgb(0 0 0 / 5%);
+    border: 0;
+    display: none;
+    min-width: 10rem;
+    top: 120%;
+}
+.menu-drop-user .dropdown-item {
+    color: #637381;
+    padding: 7px 10px!important;
+}
+.menu-drop-user .dropdown-item svg {
+    stroke-width: 1px;
+    margin-right: 10px;
+    width: 18px;
+}
+.menu-drop-user .dropdown-item {
+
+    font-size: 13px;
+    font-weight: 500;
+}
+.menu-drop-user .logout {
+    color: #f62d51;
+}
+.sidebar-collapse .sidebar{
+    padding: 20px 10px;
+}
+.sidebar-collapse .menu-arrow{
+    display: none;
+}
+/********* Dashboard - Widgets - CSS ************/
+.dash__widget{
+    background: #fff;
+    margin-bottom: 25px;
+    border-radius: 6px;
+    padding: 20px;
+    border: 1px solid #e8ebed;
+}
+.dash__widget .dash__widget__img span{
+    width: 48px;
+    height: 48px;
+    background: rgba(249,110,111,.12);
+    border-radius: 50px;
+}
+.dash__widget .dash__widget__content h5 {
+    color: #212b36;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+.dash__widget .dash__widget__content h6 {
+    font-weight: 400;
+    font-size: 14px;
+    color: #212b36;
+}
+.dash__widget .dash1{
+    background: rgba(40,199,111,.12) !important;
+}
+.dash__widget .dash2{
+    background: rgba(0,207,232,.12) !important;
+}
+.dash__widget .dash3{
+    background: rgba(234,84,85,.12) !important;
+}
+.dash__count{
+    background: #ff9f43;
+    color: #fff;
+    min-height: 98px;
+    width: 100%;
+    border-radius: 6px;
+    margin: 0 0 25px;
+    padding: 20px;
+}
+.dash__count:hover .dash__imgs{
+    transform: scale(1.25);
+    -webkit-transform: scale(1.25);
+    -ms-transform: scale(1.25);
+}
+.dash__count .dash__imgs{
+    transition: all .5s ease;
+}
+.dash__count .dash__imgs svg {
+    width: 50px;
+    height: 50px;
+}
+.dash__count.dash1{
+    background: #00cfe8;
+}
+.dash__count.dash2{
+    background: #8b6260;
+}
+.dash__count.dash3{
+    background: #28c76f;
+}
+.common__table{
+    margin: 0 0 25px;
+    border: 1px solid #e8ebed;
+    border-radius: 6px;
+    background: #fff;
+    padding: 25px;
+}
+.common__table table thead{
+    background: #fafbfe;
+    border-bottom: 1px solid #e9ecef;
+}
+.table thead th{
+    border: none;
+}
+.common__table h4{
+    font-size: 18px;
+    font-weight: 700;
+    color: #212b36;
+    margin: 0 0 20px;
+}
+.table tbody tr td {
+    padding: 10px;
+    color: #637381;
+    font-weight: 500;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.product__img__name img{
+    width: 40px;
+}
+
