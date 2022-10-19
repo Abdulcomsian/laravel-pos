@@ -57,7 +57,7 @@
                     <a href="{{ route('customers.index') }}" class="nav-link {{ activeSegment('customers') }}">
                         <!-- <i class="nav-icon fas fa-users"></i> -->
                         <img src="https://dreamspos.dreamguystech.com/html/template/assets/img/icons/users1.svg" alt="">
-                        <p>Customers</p>
+                        <p>Tables</p>
                         <span class="menu-arrow"></span>
                     </a>
                 </li>

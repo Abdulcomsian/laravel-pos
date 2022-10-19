@@ -3,7 +3,7 @@
 @section('title', 'Customer List')
 @section('content-header', 'Customer List')
 @section('content-actions')
-    <a href="{{route('customers.create')}}" class="btn common__btn">Add Customer</a>
+    <a href="{{route('customers.create')}}" class="btn common__btn">Add Table</a>
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
@@ -15,13 +15,14 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Avatar</th>
+                    <th>Table No</th>
+                    <!-- <th>Avatar</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <th>Created At</th>
+                    <th>Created At</th> -->
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -29,14 +30,15 @@
                 @foreach ($customers as $customer)
                     <tr>
                         <td>{{$customer->id}}</td>
-                        <td>
+                        <td>{{$customer->table_no}}</td>
+                       <!--  <td>
                             <img width="50" src="{{$customer->getAvatarUrl()}}" alt="">
                         </td>
                         <td>{{$customer->first_name}}</td>
                         <td>{{$customer->last_name}}</td>
                         <td>{{$customer->email}}</td>
                         <td>{{$customer->phone}}</td>
-                        <td>{{$customer->address}}</td>
+                        <td>{{$customer->address}}</td> -->
                         <td>{{$customer->created_at}}</td>
                         <td>
                             <a href="{{ route('customers.edit', $customer) }}" class="btn btn-primary"><i

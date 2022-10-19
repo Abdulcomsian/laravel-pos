@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderStoreRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use DB;
 
 class OrderController extends Controller
 {
@@ -35,7 +36,7 @@ class OrderController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
-        $cart = $request->user()->cart()->get();
+        $cart = $request->user()->cart()->where('customer_id',$request->customer_id)->get();
         foreach ($cart as $item) {
             $order->items()->create([
                 'price' => $item->price * $item->pivot->quantity,
@@ -45,7 +46,8 @@ class OrderController extends Controller
             $item->quantity = $item->quantity - $item->pivot->quantity;
             $item->save();
         }
-        $request->user()->cart()->detach();
+        DB::table('user_cart')->where('customer_id',$request->customer_id)->delete();
+       // $request->user()->cart()->where('customer_id',$request->customer_id)->detach();
         $order->payments()->create([
             'amount' => $request->amount,
             'user_id' => $request->user()->id,

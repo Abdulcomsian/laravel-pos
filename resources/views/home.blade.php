@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
    <div class="row">
-      <div class="col-lg-3 col-6">
+      <!-- <div class="col-lg-3 col-6">
          <div class="dash__widget d-flex">
             <div class="dash__widget__img">
                <span class="d-flex align-items-center justify-content-center">
@@ -54,7 +54,7 @@
                <h6>Total Sale Amount</h6>
             </div>
          </div>
-      </div>
+      </div> -->
       <div class="col-lg-3 col-6">
          <!-- small box -->
          <a href="{{ route('customers.index') }}">
@@ -71,7 +71,7 @@
                </div>
             </div>
          </a>
-         <!-- <div class="small-box bg-info">
+         <div class="small-box bg-info">
             <div class="inner">
                 <h3>{{$orders_count}}</h3>
               <p>Orders Count</p>
@@ -80,7 +80,7 @@
               <i class="ion ion-bag"></i>
             </div>
             <a href="{{route('orders.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div> -->
+            </div>
       </div>
       <!-- ./col -->
       <div class="col-lg-3 col-6">
@@ -175,7 +175,7 @@
       </div>
       <!-- ./col -->
 
-      <div class="col-lg-12 col-12">
+      <!-- <div class="col-lg-12 col-12">
         <div class="recent__added__table common__table">
           <h4 class="card-title mb-4">Recently Added Products</h4>
           <div class="table-responsive"><table class="table">
@@ -280,7 +280,7 @@
           </table>
           </div>
         </div>
-      </div>
+      </div> -->
    </div>
 </div>
 @endsection

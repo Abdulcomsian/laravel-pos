@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { sum } from "lodash";
+import ReactToPrint from "react-to-print";
+import $ from "jquery";
 
 class Cart extends Component {
     constructor(props) {
@@ -26,7 +28,7 @@ class Cart extends Component {
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.handleSeach = this.handleSeach.bind(this);
         this.setCustomerId = this.setCustomerId.bind(this);
-        this.handleClickSubmit = this.handleClickSubmit.bind(this)
+        this.handleClickSubmit = this.handleClickSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -91,7 +93,7 @@ class Cart extends Component {
 
         axios
             .post("/admin/cart/change-qty", { product_id, quantity: qty })
-            .then(res => { })
+            .then(res => {})
             .catch(err => {
                 Swal.fire("Error!", err.response.data.message, "error");
             });
@@ -126,6 +128,7 @@ class Cart extends Component {
 
     addProductToCart(barcode) {
         let product = this.state.products.find(p => p.barcode === barcode);
+        let customerid = this.state.customer_id;
         if (!!product) {
             // if product is already in cart
             let cart = this.state.cart.find(c => c.id === product.id);
@@ -133,7 +136,10 @@ class Cart extends Component {
                 // update quantity
                 this.setState({
                     cart: this.state.cart.map(c => {
-                        if (c.id === product.id && product.quantity > c.pivot.quantity) {
+                        if (
+                            c.id === product.id &&
+                            product.quantity > c.pivot.quantity
+                        ) {
                             c.pivot.quantity = c.pivot.quantity + 1;
                         }
                         return c;
@@ -155,9 +161,8 @@ class Cart extends Component {
             }
 
             axios
-                .post("/admin/cart", { barcode })
+                .post("/admin/cart", { barcode, customerid })
                 .then(res => {
-                    // this.loadCart();
                     console.log(res);
                 })
                 .catch(err => {
@@ -167,36 +172,174 @@ class Cart extends Component {
     }
 
     setCustomerId(event) {
+        let customerid = event.target.value;
         this.setState({ customer_id: event.target.value });
+        axios.post("/admin/getcart", { customerid }).then(res => {
+            const cart = res.data;
+            this.setState({ cart });
+        });
     }
     handleClickSubmit() {
         Swal.fire({
-            title: 'Received Amount',
-            input: 'text',
+            title: "Received Amount",
+            input: "text",
             inputValue: this.getTotal(this.state.cart),
             showCancelButton: true,
-            confirmButtonText: 'Send',
+            confirmButtonText: "Send",
             showLoaderOnConfirm: true,
-            preConfirm: (amount) => {
-                return axios.post('/admin/orders', { customer_id: this.state.customer_id, amount }).then(res => {
-                    this.loadCart();
-                    return res.data;
-                }).catch(err => {
-                    Swal.showValidationMessage(err.response.data.message)
-                })
+            preConfirm: amount => {
+                return axios
+                    .post("/admin/orders", {
+                        customer_id: this.state.customer_id,
+                        amount
+                    })
+                    .then(res => {
+                        $(".printdev").addClass("active");
+                        document.getElementById("printbtn").click();
+                        this.loadCart();
+                        return res.data;
+                    })
+                    .catch(err => {
+                        Swal.showValidationMessage(err.response.data.message);
+                    });
             },
             allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
+        }).then(result => {
             if (result.value) {
                 //
             }
-        })
-
+        });
     }
     render() {
         const { cart, products, customers, barcode } = this.state;
         return (
             <div className="row">
+                <div>
+                    <ReactToPrint
+                        trigger={() => {
+                            return (
+                                <button className="d-none" id="printbtn">
+                                    Print
+                                </button>
+                            );
+                        }}
+                        content={() => this.componentRef}
+                        documentTitle="new Doucment"
+                        pageStyle="print"
+                    />
+                </div>
+                <div
+                    className="col-md-10 printdev"
+                    ref={el => (this.componentRef = el)}
+                >
+                    <div className="panel panel-default plain" id="dash_0">
+                        <div className="panel-body p30">
+                            <div className="row">
+                                <div className="col-lg-12">
+                                    <div className="invoice-details mt25">
+                                        <div className="well">
+                                            <ul className="list-unstyled mb0">
+                                                <li>
+                                                    <strong>Invoice</strong>
+                                                    #936988
+                                                </li>
+                                                <li>
+                                                    <strong>
+                                                        Invoice Date:
+                                                    </strong>
+                                                </li>
+                                                <li>
+                                                    <strong>Status:</strong>
+                                                    <span className="label label-danger">
+                                                        PAID
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {/* <div className="invoice-to mt25">
+                                        <ul className="list-unstyled">
+                                            <li>
+                                                <strong>Invoiced To</strong>
+                                            </li>
+                                            <li>Jakob Smith</li>
+                                            <li>Roupark 37</li>
+                                            <li>New York, NY, 2014</li>
+                                            <li>USA</li>
+                                        </ul>
+                                    </div> */}
+                                    <div className="invoice-items">
+                                        <div
+                                            className="table-responsive"
+                                            style={{
+                                                overflow: "hidden",
+                                                outline: "none"
+                                            }}
+                                            tabIndex="0"
+                                        >
+                                            <table className="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="per70 text-center">
+                                                            Name
+                                                        </th>
+                                                        <th className="per5 text-center">
+                                                            Qty
+                                                        </th>
+                                                        <th className="per25 text-center">
+                                                            Total
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {cart.map(c => (
+                                                        <tr key={c.id}>
+                                                            <td>{c.name}</td>
+                                                            <td className="text-center">
+                                                                {
+                                                                    c.pivot
+                                                                        .quantity
+                                                                }
+                                                            </td>
+                                                            <td className="text-center">
+                                                                {c.price *
+                                                                    c.pivot
+                                                                        .quantity}{" "}
+                                                                {
+                                                                    window.APP
+                                                                        .currency_symbol
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th
+                                                            colSpan="2"
+                                                            className="text-right"
+                                                        >
+                                                            Sub Total:
+                                                        </th>
+                                                        <th className="text-center">
+                                                            {
+                                                                window.APP
+                                                                    .currency_symbol
+                                                            }{" "}
+                                                            {this.getTotal(
+                                                                cart
+                                                            )}
+                                                        </th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="col-md-6 col-lg-4">
                     <div className="row mb-2">
                         <div className="col">
@@ -215,12 +358,12 @@ class Cart extends Component {
                                 className="form-control"
                                 onChange={this.setCustomerId}
                             >
-                                <option value="">Walking Customer</option>
+                                <option value="">Select Table</option>
                                 {customers.map(cus => (
                                     <option
                                         key={cus.id}
                                         value={cus.id}
-                                    >{`${cus.first_name} ${cus.last_name}`}</option>
+                                    >{`${cus.table_no}`}</option>
                                 ))}
                             </select>
                         </div>
@@ -322,7 +465,15 @@ class Cart extends Component {
                                 className="item"
                             >
                                 <img src={p.image_url} alt="" />
-                                <h5 style={window.APP.warning_quantity > p.quantity ? { color: 'red' } : {}}>{p.name}({p.quantity})</h5>
+                                <h5
+                                    style={
+                                        window.APP.warning_quantity > p.quantity
+                                            ? { color: "red" }
+                                            : {}
+                                    }
+                                >
+                                    {p.name}({p.quantity})
+                                </h5>
                             </div>
                         ))}
                     </div>

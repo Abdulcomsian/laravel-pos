@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -22,5 +23,8 @@ class UserSeeder extends Seeder
             'email'=>'admin@gmail.com',
             'password' => bcrypt('admin123')
         ]);
+
+
+
     }
 }

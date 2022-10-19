@@ -323,3 +323,12 @@ li.dropdown:hover .menu-drop-user{
     width: 40px;
 }
 
+.printdev{
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+.printdev.active{
+    opacity: 1;
+}
+

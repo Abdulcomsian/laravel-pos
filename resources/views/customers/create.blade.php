@@ -8,8 +8,19 @@
 
             <form action="{{ route('customers.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-
                 <div class="form-group">
+                    <label for="first_name">Table No:</label>
+                    <input type="text" name="table_no" class="form-control @error('table_no') is-invalid @enderror"
+                           id="table_no"
+                           placeholder="Table No" value="{{ old('table_no') }}" required>
+                    @error('table_no')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+               <!--  <div class="form-group">
                     <label for="first_name">First Name</label>
                     <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
                            id="first_name"
@@ -78,7 +89,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
                     @enderror
-                </div>
+                </div> -->
 
 
                 <button class="btn common__btn" type="submit">Create</button>

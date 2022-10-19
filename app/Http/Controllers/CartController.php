@@ -3,18 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
     public function index(Request $request)
     {
+
         if ($request->wantsJson()) {
             return response(
-                $request->user()->cart()->get()
+                $request->user()->cart()->where('customer_id',001)->get()
             );
         }
         return view('cart.index');
+    }
+
+    public function getCart(Request $request)
+    {
+        if ($request->wantsJson()) {
+            return response(
+                $request->user()->cart()->where('customer_id',$request->customerid)->get()
+            );
+        }
+       
+
     }
 
     public function store(Request $request)
@@ -23,9 +36,9 @@ class CartController extends Controller
             'barcode' => 'required|exists:products,barcode',
         ]);
         $barcode = $request->barcode;
-
+        $table_id=$request->customerid;
         $product = Product::where('barcode', $barcode)->first();
-        $cart = $request->user()->cart()->where('barcode', $barcode)->first();
+        $cart = $request->user()->cart()->where('barcode', $barcode)->where('customer_id',$table_id)->first();
         if ($cart) {
             // check product quantity
             if($product->quantity <= $cart->pivot->quantity) {
@@ -42,7 +55,7 @@ class CartController extends Controller
                     'message' => 'Product out of stock',
                 ], 400);
             }
-            $request->user()->cart()->attach($product->id, ['quantity' => 1]);
+            $request->user()->cart()->attach($product->id, ['quantity' => 1,'customer_id'=>$table_id]);
         }
 
         return response('', 204);
