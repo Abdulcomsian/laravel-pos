@@ -15,7 +15,8 @@ class Cart extends Component {
             customers: [],
             barcode: "",
             search: "",
-            customer_id: ""
+            customer_id: "",
+            gst: parseInt($("#gst").val())
         };
 
         this.loadCart = this.loadCart.bind(this);
@@ -62,7 +63,13 @@ class Cart extends Component {
     loadCart() {
         axios.get("/admin/cart").then(res => {
             const cart = res.data;
-            this.setState({ cart });
+            if (res.data.length > 0) {
+                this.setState({ customer_id: res.data[0].pivot.customer_id });
+                this.setState({ cart });
+            } else {
+                this.setState({ customer_id: "" });
+                this.setState({ cart: [] });
+            }
         });
     }
 
@@ -103,6 +110,12 @@ class Cart extends Component {
         const total = cart.map(c => c.pivot.quantity * c.price);
         return sum(total).toFixed(2);
     }
+
+    getGstAmount(cart) {
+        let subtotal = cart.map(c => c.pivot.quantity * c.price);
+        return (sum(subtotal) / 100) * this.state.gst;
+    }
+
     handleClickDelete(product_id) {
         axios
             .post("/admin/cart/delete", { product_id, _method: "DELETE" })
@@ -126,9 +139,10 @@ class Cart extends Component {
         }
     }
 
-    addProductToCart(barcode) {
+    addProductToCart(barcode, pid) {
         let product = this.state.products.find(p => p.barcode === barcode);
         let customerid = this.state.customer_id;
+        console.log(customerid);
         if (!!product) {
             // if product is already in cart
             let cart = this.state.cart.find(c => c.id === product.id);
@@ -161,7 +175,7 @@ class Cart extends Component {
             }
 
             axios
-                .post("/admin/cart", { barcode, customerid })
+                .post("/admin/cart", { barcode, pid, customerid })
                 .then(res => {
                     console.log(res);
                 })
@@ -197,7 +211,7 @@ class Cart extends Component {
                         $(".printdev").addClass("active");
                         document.getElementById("printbtn").click();
                         this.loadCart();
-                        return res.data;
+                        //return res.data;
                     })
                     .catch(err => {
                         Swal.showValidationMessage(err.response.data.message);
@@ -228,116 +242,74 @@ class Cart extends Component {
                         pageStyle="print"
                     />
                 </div>
-                <div
-                    className="col-md-10 printdev"
-                    ref={el => (this.componentRef = el)}
-                >
-                    <div className="panel panel-default plain" id="dash_0">
-                        <div className="panel-body p30">
-                            <div className="row">
-                                <div className="col-lg-12">
-                                    <div className="invoice-details mt25">
-                                        <div className="well">
-                                            <ul className="list-unstyled mb0">
-                                                <li>
-                                                    <strong>Invoice</strong>
-                                                    #936988
-                                                </li>
-                                                <li>
-                                                    <strong>
-                                                        Invoice Date:
-                                                    </strong>
-                                                </li>
-                                                <li>
-                                                    <strong>Status:</strong>
-                                                    <span className="label label-danger">
-                                                        PAID
-                                                    </span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    {/* <div className="invoice-to mt25">
-                                        <ul className="list-unstyled">
-                                            <li>
-                                                <strong>Invoiced To</strong>
-                                            </li>
-                                            <li>Jakob Smith</li>
-                                            <li>Roupark 37</li>
-                                            <li>New York, NY, 2014</li>
-                                            <li>USA</li>
-                                        </ul>
-                                    </div> */}
-                                    <div className="invoice-items">
-                                        <div
-                                            className="table-responsive"
-                                            style={{
-                                                overflow: "hidden",
-                                                outline: "none"
-                                            }}
-                                            tabIndex="0"
-                                        >
-                                            <table className="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th className="per70 text-center">
-                                                            Name
-                                                        </th>
-                                                        <th className="per5 text-center">
-                                                            Qty
-                                                        </th>
-                                                        <th className="per25 text-center">
-                                                            Total
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {cart.map(c => (
-                                                        <tr key={c.id}>
-                                                            <td>{c.name}</td>
-                                                            <td className="text-center">
-                                                                {
-                                                                    c.pivot
-                                                                        .quantity
-                                                                }
-                                                            </td>
-                                                            <td className="text-center">
-                                                                {c.price *
-                                                                    c.pivot
-                                                                        .quantity}{" "}
-                                                                {
-                                                                    window.APP
-                                                                        .currency_symbol
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th
-                                                            colSpan="2"
-                                                            className="text-right"
-                                                        >
-                                                            Sub Total:
-                                                        </th>
-                                                        <th className="text-center">
-                                                            {
-                                                                window.APP
-                                                                    .currency_symbol
-                                                            }{" "}
-                                                            {this.getTotal(
-                                                                cart
-                                                            )}
-                                                        </th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div className="printdev" ref={el => (this.componentRef = el)}>
+                    <div class="ticket">
+                        <p class="centered">
+                            <img src="http://127.0.0.1:8000/images/logo.png" />
+                            <br />
+                            Kandaan Plaza F7, Markaz
+                            <br />
+                            Jani Babu Barbecue
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="quantity">Q.</th>
+                                    <th class="description">Name</th>
+                                    <th class="price">$$</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {cart.map(c => (
+                                    <tr key={c.id}>
+                                        <td class="quantity">
+                                            {" "}
+                                            {c.pivot.quantity}
+                                        </td>
+                                        <td class="description">{c.name}</td>
+                                        <td class="price">
+                                            {c.price * c.pivot.quantity}{" "}
+                                            {window.APP.currency_symbol}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colSpan="2" className="text-right">
+                                        Sub Total:
+                                    </th>
+                                    <th className="text-center">
+                                        {window.APP.currency_symbol}{" "}
+                                        {this.getTotal(cart)}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colSpan="2" className="text-right">
+                                        GST {this.state.gst}%:
+                                    </th>
+                                    <th className="text-center">
+                                        {window.APP.currency_symbol}{" "}
+                                        {this.getGstAmount(cart)}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colSpan="2" className="text-right">
+                                        Total:
+                                    </th>
+                                    <th className="text-center">
+                                        {window.APP.currency_symbol}{" "}
+                                        {parseInt(this.getTotal(cart)) +
+                                            parseInt(this.getGstAmount(cart))}
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <p class="centered">
+                            Thanks for your purchase!
+                            <br />
+                            parzibyte.me/blog
+                        </p>
                     </div>
                 </div>
                 <div className="col-md-6 col-lg-4">
@@ -363,6 +335,11 @@ class Cart extends Component {
                                     <option
                                         key={cus.id}
                                         value={cus.id}
+                                        selected={
+                                            this.state.customer_id == cus.id
+                                                ? "selected"
+                                                : ""
+                                        }
                                     >{`${cus.table_no}`}</option>
                                 ))}
                             </select>
@@ -419,9 +396,25 @@ class Cart extends Component {
                     </div>
 
                     <div className="row">
-                        <div className="col">Total:</div>
+                        <div className="col">Sub Total:</div>
                         <div className="col text-right">
                             {window.APP.currency_symbol} {this.getTotal(cart)}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">GST {this.state.gst}%:</div>
+                        <div className="col text-right">
+                            {window.APP.currency_symbol}{" "}
+                            {this.getGstAmount(cart)}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">Total:</div>
+                        <div className="col text-right">
+                            {window.APP.currency_symbol}
+
+                            {parseInt(this.getTotal(cart)) +
+                                parseInt(this.getGstAmount(cart))}
                         </div>
                     </div>
                     <div className="row">
@@ -460,7 +453,9 @@ class Cart extends Component {
                     <div className="order-product">
                         {products.map(p => (
                             <div
-                                onClick={() => this.addProductToCart(p.barcode)}
+                                onClick={() =>
+                                    this.addProductToCart(p.barcode, p.id)
+                                }
                                 key={p.id}
                                 className="item"
                             >

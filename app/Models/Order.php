@@ -8,7 +8,8 @@ class Order extends Model
 {
     protected $fillable = [
         'customer_id',
-        'user_id'
+        'user_id',
+        'gst',
     ];
 
     public function items()
@@ -28,7 +29,7 @@ class Order extends Model
 
     public function getCustomerName()
     {
-        if($this->customer) {
+        if ($this->customer) {
             return $this->customer->first_name . ' ' . $this->customer->last_name;
         }
         return 'Working Customer';
@@ -36,7 +37,7 @@ class Order extends Model
 
     public function total()
     {
-        return $this->items->map(function ($i){
+        return $this->items->map(function ($i) {
             return $i->price;
         })->sum();
     }
@@ -48,7 +49,7 @@ class Order extends Model
 
     public function receivedAmount()
     {
-        return $this->payments->map(function ($i){
+        return $this->payments->map(function ($i) {
             return $i->amount;
         })->sum();
     }
@@ -56,5 +57,10 @@ class Order extends Model
     public function formattedReceivedAmount()
     {
         return number_format($this->receivedAmount(), 2);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

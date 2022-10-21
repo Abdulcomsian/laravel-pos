@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('expense_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->nullable();
-            $table->foreignId('user_id');
+            $table->string('name')->nullable();
             $table->timestamps();
-            $table->integer('gst')->default(0);
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('expense_categories');
     }
 };

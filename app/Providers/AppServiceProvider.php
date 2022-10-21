@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        if (! $this->app->runningInConsole()) {
+        if (!$this->app->runningInConsole()) {
             // 'key' => 'value'
             $settings = Setting::all('key', 'value')
                 ->keyBy('key')
@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
                 })
                 ->toArray();
             config([
-               'settings' => $settings
+                'settings' => $settings
             ]);
 
             config(['app.name' => config('settings.app_name')]);

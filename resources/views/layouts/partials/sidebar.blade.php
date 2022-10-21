@@ -2,11 +2,10 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <div class="side__bar__top">
-    <a href="{{route('home')}}" class="brand-link">
-        <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image"
-             style="opacity: .8">
-        <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
-    </a>
+        <a href="{{route('home')}}" class="brand-link">
+            <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
+            <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
+        </a>
     </div>
 
     <!-- Sidebar -->
@@ -61,6 +60,41 @@
                         <span class="menu-arrow"></span>
                     </a>
                 </li>
+                @if(Auth::user()->role_name=="admin")
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('admin/expensecategory') }}" class="nav-link {{ activeSegment('expensecategory') }}">
+                        <!-- <i class="nav-icon fas fa-users"></i> -->
+                        <img src="https://dreamspos.dreamguystech.com/html/template/assets/img/icons/users1.svg" alt="">
+                        <p>Expense Category</p>
+                        <span class="menu-arrow"></span>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('admin/expense') }}" class="nav-link {{ activeSegment('expense') }}">
+                        <!-- <i class="nav-icon fas fa-users"></i> -->
+                        <img src="https://dreamspos.dreamguystech.com/html/template/assets/img/icons/users1.svg" alt="">
+                        <p>Expense</p>
+                        <span class="menu-arrow"></span>
+                    </a>
+                </li>
+
+                <li class="nav-item has-treeview">
+                    <a href="{{ route('report.income') }}" class="nav-link {{ activeSegment('reports') }}">
+                        <!-- <i class="nav-icon fas fa-users"></i> -->
+                        <img src="https://dreamspos.dreamguystech.com/html/template/assets/img/icons/users1.svg" alt="">
+                        <p>Income Report</p>
+                        <span class="menu-arrow"></span>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ route('report.profitlost') }}" class="nav-link {{ activeSegment('profit') }}">
+                        <!-- <i class="nav-icon fas fa-users"></i> -->
+                        <img src="https://dreamspos.dreamguystech.com/html/template/assets/img/icons/users1.svg" alt="">
+                        <p>Inc/Exp Report</p>
+                        <span class="menu-arrow"></span>
+                    </a>
+                </li>
+
                 <li class="nav-item has-treeview">
                     <a href="{{ route('settings.index') }}" class="nav-link {{ activeSegment('settings') }}">
                         <!-- <i class="nav-icon fas fa-cogs"></i> -->
@@ -69,6 +103,7 @@
                         <span class="menu-arrow"></span>
                     </a>
                 </li>
+                @endif
                 <!-- <li class="nav-item">
                     <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit()">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
