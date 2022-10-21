@@ -35,7 +35,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Customer Name</th>
+                    <th>Table No</th>
                     <th>Sub Total</th>
                     <th>GST%</th>
                     <th>Gst Amount</th>
@@ -51,7 +51,7 @@
                 @foreach ($orders as $order)
                 <tr>
                     <td>{{$order->id}}</td>
-                    <td>{{$order->getCustomerName()}}</td>
+                    <td>{{$order->custome->table_no}}</td>
                     <td>{{ config('settings.currency_symbol') }} {{$order->formattedTotal()}}</td>
                     <td>{{$order->gst}}</td>
                     <td>

@@ -39,7 +39,7 @@ class OrderController extends Controller
         $order = Order::create([
             'customer_id' => $request->customer_id,
             'user_id' => $request->user()->id,
-            'gst' => $gst->value ?? NULL,
+            'gst' => $gst->value ?? 0,
         ]);
 
         $cart = $request->user()->cart()->where('customer_id', $request->customer_id)->get();
@@ -57,6 +57,7 @@ class OrderController extends Controller
         $order->payments()->create([
             'amount' => $request->amount,
             'user_id' => $request->user()->id,
+            'gst' => $gst->value ?? 0,
         ]);
         return 'success';
     }
