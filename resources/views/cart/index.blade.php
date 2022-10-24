@@ -12,9 +12,7 @@
         border-collapse: collapse;
     }
 
-    table{
-        width: 100%;
-    }
+
 
     td.description,
     th.description {
@@ -40,14 +38,12 @@
         text-align: center;
         align-content: center;
     }
-    .printdev{
-        width: 100%;
-    }
+    
 
-   /* .ticket {
+    .ticket {
         width: 210px;
         max-width: 210px;
-    }*/
+    }
 </style>
 <input type="hidden" id="gst" name="gst" value="{{$gstdata->value}}" />
 <div id="cart"></div>
