@@ -12,6 +12,10 @@
         border-collapse: collapse;
     }
 
+    table{
+        width: 100%;
+    }
+
     td.description,
     th.description {
         width: 100px;
@@ -35,6 +39,9 @@
     .centered {
         text-align: center;
         align-content: center;
+    }
+    .printdev{
+        width: 100%;
     }
 
    /* .ticket {
