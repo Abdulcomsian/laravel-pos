@@ -10,6 +10,9 @@
         height:100%;
         position:absolute;
        }
+       .paper-size {
+            width: 76mm !important;
+        }
          td,
         th,
         tr,
