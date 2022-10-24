@@ -6,14 +6,15 @@
 <style>
     @media print {
         html, body {
-        width: 80mm;
+        width: 100%;
         height:100%;
         position:absolute;
         page-break-after: auto;
        }
-       .paper-size {
-            width: 76mm !important;
-        }
+       /*.paper-size {
+            width: 90% !important;
+            margin:0 auto;
+        }*/
          td,
         th,
         tr,
@@ -50,8 +51,8 @@
         }
 
         .ticket {
-            width: 210px;
-            max-width: 210px;
+            width: 400px;
+            max-width: 4000px;
         }
       }
     
