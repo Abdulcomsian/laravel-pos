@@ -7,14 +7,10 @@
     @media print {
         html, body {
         width: 100%;
-        height:100%;
+        height:auto;
         position:absolute;
         page-break-after: auto;
        }
-       /*.paper-size {
-            width: 90% !important;
-            margin:0 auto;
-        }*/
          td,
         th,
         tr,
@@ -51,8 +47,7 @@
         }
 
         .ticket {
-            width: 400px;
-            max-width: 4000px;
+            width: 100%;
         }
       }
     
