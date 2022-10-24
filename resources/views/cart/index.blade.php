@@ -9,6 +9,7 @@
         width: 80mm;
         height:100%;
         position:absolute;
+        page-break-after: auto;
        }
        .paper-size {
             width: 76mm !important;
