@@ -69730,6 +69730,7 @@ var Cart = /*#__PURE__*/function (_Component) {
             customer_id: _this9.state.customer_id,
             amount: amount
           }).then(function (res) {
+            console.log("print");
             jquery__WEBPACK_IMPORTED_MODULE_6___default()(".printdev").addClass("active");
             document.getElementById("printbtn").click();
 

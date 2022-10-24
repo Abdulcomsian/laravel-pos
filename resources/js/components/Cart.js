@@ -15,7 +15,7 @@ class Cart extends Component {
             customers: [],
             barcode: "",
             search: "",
-            customer_id: "",
+            customer_id: 1,
             gst: parseInt($("#gst").val())
         };
 
@@ -208,6 +208,7 @@ class Cart extends Component {
                         amount
                     })
                     .then(res => {
+                        console.log("print");
                         $(".printdev").addClass("active");
                         document.getElementById("printbtn").click();
                         this.loadCart();
