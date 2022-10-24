@@ -228,7 +228,7 @@ class Cart extends Component {
     render() {
         const { cart, products, customers, barcode } = this.state;
         return (
-            <div className="row">
+            <div>
                 <div>
                     <ReactToPrint
                         trigger={() => {
@@ -308,164 +308,172 @@ class Cart extends Component {
                         Developed by Abdul Basit Mobile #: 03115818727
                     </p>
                 </div>
-                <div className="col-md-6 col-lg-4">
-                    <div className="row mb-2">
-                        <div className="col">
-                            <form onSubmit={this.handleScanBarcode}>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Scan Barcode..."
-                                    value={barcode}
-                                    onChange={this.handleOnChangeBarcode}
-                                />
-                            </form>
-                        </div>
-                        <div className="col">
-                            <select
-                                className="form-control"
-                                onChange={this.setCustomerId}
-                            >
-                                {customers.map(cus => (
-                                    <option
-                                        key={cus.id}
-                                        value={cus.id}
-                                        selected={
-                                            this.state.customer_id == cus.id
-                                                ? "selected"
-                                                : ""
-                                        }
-                                    >{`${cus.table_no}`}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="user-cart">
-                        <div className="card">
-                            <table className="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Quantity</th>
-                                        <th className="text-right">Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {cart.map(c => (
-                                        <tr key={c.id}>
-                                            <td>{c.name}</td>
-                                            <td>
-                                                <input
-                                                    type="text"
-                                                    className="form-control form-control-sm qty"
-                                                    value={c.pivot.quantity}
-                                                    onChange={event =>
-                                                        this.handleChangeQty(
-                                                            c.id,
-                                                            event.target.value
-                                                        )
-                                                    }
-                                                />
-                                                <button
-                                                    className="btn btn-danger btn-sm"
-                                                    onClick={() =>
-                                                        this.handleClickDelete(
-                                                            c.id
-                                                        )
-                                                    }
-                                                >
-                                                    <i className="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                            <td className="text-right">
-                                                {window.APP.currency_symbol}{" "}
-                                                {(
-                                                    c.price * c.pivot.quantity
-                                                ).toFixed(2)}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col">Sub Total:</div>
-                        <div className="col text-right">
-                            {window.APP.currency_symbol} {this.getTotal(cart)}
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">GST {this.state.gst}%:</div>
-                        <div className="col text-right">
-                            {window.APP.currency_symbol}{" "}
-                            {this.getGstAmount(cart)}
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">Total:</div>
-                        <div className="col text-right">
-                            {window.APP.currency_symbol}
-
-                            {parseInt(this.getTotal(cart)) +
-                                parseInt(this.getGstAmount(cart))}
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <button
-                                type="button"
-                                className="btn btn-danger btn-block"
-                                onClick={this.handleEmptyCart}
-                                disabled={!cart.length}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                        <div className="col">
-                            <button
-                                type="button"
-                                className="btn btn-primary btn-block"
-                                disabled={!cart.length}
-                                onClick={this.handleClickSubmit}
-                            >
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-6 col-lg-8">
-                    <div className="mb-2">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search Product..."
-                            onChange={this.handleChangeSearch}
-                            onKeyDown={this.handleSeach}
-                        />
-                    </div>
-                    <div className="order-product">
-                        {products.map(p => (
-                            <div
-                                onClick={() =>
-                                    this.addProductToCart(p.barcode, p.id)
-                                }
-                                key={p.id}
-                                className="item"
-                            >
-                                <img src={p.image_url} alt="" />
-                                <h5
-                                    style={
-                                        window.APP.warning_quantity > p.quantity
-                                            ? { color: "red" }
-                                            : {}
-                                    }
-                                >
-                                    {p.name}({p.quantity})
-                                </h5>
+                <div className="row">
+                    <div className="col-md-6 col-lg-4">
+                        <div className="row mb-2">
+                            <div className="col">
+                                <form onSubmit={this.handleScanBarcode}>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Scan Barcode..."
+                                        value={barcode}
+                                        onChange={this.handleOnChangeBarcode}
+                                    />
+                                </form>
                             </div>
-                        ))}
+                            <div className="col">
+                                <select
+                                    className="form-control"
+                                    onChange={this.setCustomerId}
+                                >
+                                    {customers.map(cus => (
+                                        <option
+                                            key={cus.id}
+                                            value={cus.id}
+                                            selected={
+                                                this.state.customer_id == cus.id
+                                                    ? "selected"
+                                                    : ""
+                                            }
+                                        >{`${cus.table_no}`}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        <div className="user-cart">
+                            <div className="card">
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th className="text-right">
+                                                Price
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cart.map(c => (
+                                            <tr key={c.id}>
+                                                <td>{c.name}</td>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control form-control-sm qty"
+                                                        value={c.pivot.quantity}
+                                                        onChange={event =>
+                                                            this.handleChangeQty(
+                                                                c.id,
+                                                                event.target
+                                                                    .value
+                                                            )
+                                                        }
+                                                    />
+                                                    <button
+                                                        className="btn btn-danger btn-sm"
+                                                        onClick={() =>
+                                                            this.handleClickDelete(
+                                                                c.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <i className="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                                <td className="text-right">
+                                                    {window.APP.currency_symbol}{" "}
+                                                    {(
+                                                        c.price *
+                                                        c.pivot.quantity
+                                                    ).toFixed(2)}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col">Sub Total:</div>
+                            <div className="col text-right">
+                                {window.APP.currency_symbol}{" "}
+                                {this.getTotal(cart)}
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">GST {this.state.gst}%:</div>
+                            <div className="col text-right">
+                                {window.APP.currency_symbol}{" "}
+                                {this.getGstAmount(cart)}
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">Total:</div>
+                            <div className="col text-right">
+                                {window.APP.currency_symbol}
+
+                                {parseInt(this.getTotal(cart)) +
+                                    parseInt(this.getGstAmount(cart))}
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                <button
+                                    type="button"
+                                    className="btn btn-danger btn-block"
+                                    onClick={this.handleEmptyCart}
+                                    disabled={!cart.length}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                            <div className="col">
+                                <button
+                                    type="button"
+                                    className="btn btn-primary btn-block"
+                                    disabled={!cart.length}
+                                    onClick={this.handleClickSubmit}
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6 col-lg-8">
+                        <div className="mb-2">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Search Product..."
+                                onChange={this.handleChangeSearch}
+                                onKeyDown={this.handleSeach}
+                            />
+                        </div>
+                        <div className="order-product">
+                            {products.map(p => (
+                                <div
+                                    onClick={() =>
+                                        this.addProductToCart(p.barcode, p.id)
+                                    }
+                                    key={p.id}
+                                    className="item"
+                                >
+                                    <img src={p.image_url} alt="" />
+                                    <h5
+                                        style={
+                                            window.APP.warning_quantity >
+                                            p.quantity
+                                                ? { color: "red" }
+                                                : {}
+                                        }
+                                    >
+                                        {p.name}({p.quantity})
+                                    </h5>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
