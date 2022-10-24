@@ -251,7 +251,7 @@ class Cart extends Component {
                             <br />
                             Jani Babu Barbecue
                         </p>
-                        <table>
+                        <table >
                             <thead>
                                 <tr>
                                     <th class="quantity">Q.</th>

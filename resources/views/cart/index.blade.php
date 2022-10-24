@@ -37,10 +37,10 @@
         align-content: center;
     }
 
-    .ticket {
+   /* .ticket {
         width: 210px;
         max-width: 210px;
-    }
+    }*/
 </style>
 <input type="hidden" id="gst" name="gst" value="{{$gstdata->value}}" />
 <div id="cart"></div>
