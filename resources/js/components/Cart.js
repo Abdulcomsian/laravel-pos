@@ -308,7 +308,8 @@ class Cart extends Component {
                         <p class="centered">
                             Thanks for your purchase!
                             <br />
-                            parzibyte.me/blog
+                            Developed by Abdul Basit
+                            Mobile #: 03115818727
                         </p>
                     </div>
                 </div>
@@ -330,7 +331,6 @@ class Cart extends Component {
                                 className="form-control"
                                 onChange={this.setCustomerId}
                             >
-                                <option value="">Select Table</option>
                                 {customers.map(cus => (
                                     <option
                                         key={cus.id}
