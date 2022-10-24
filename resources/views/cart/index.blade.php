@@ -41,8 +41,8 @@
     }
 
     .ticket {
-        width: 210px;
-        max-width: 210px;
+        width: 500px;
+        max-width: 500px;
     }
       }
     
