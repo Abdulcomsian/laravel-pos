@@ -9,6 +9,7 @@
         html,
         body {
             page-break-after: auto;
+            height: 99%;
         }
 
         td,
@@ -50,8 +51,8 @@
         }
 
         .printdev {
-            width: 1000px;
-            max-width: 1000px;
+            width: 100%;
+            height: auto;
         }
 
 
@@ -96,8 +97,8 @@
     }
 
     .printdev {
-        width: 1000px;
-        max-width: 1000px;
+        width: 100%;
+        height: auto;
     }
 </style>
 <input type="hidden" id="gst" name="gst" value="{{$gstdata->value}}" />
