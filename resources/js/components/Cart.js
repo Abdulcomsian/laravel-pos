@@ -242,76 +242,70 @@ class Cart extends Component {
                         pageStyle="print"
                     />
                 </div>
-                <div className="printdev" ref={el => (this.componentRef = el)}>
-                    <div class="ticket">
-                        <p class="centered">
-                            <img src="http://127.0.0.1:8000/images/logo.png" />
-                            <br />
-                            Kandaan Plaza F7, Markaz
-                            <br />
-                            Jani Babu Barbecue
-                        </p>
-                        <table >
-                            <thead>
-                                <tr>
-                                    <th class="quantity">Q.</th>
-                                    <th class="description">Name</th>
-                                    <th class="price">$$</th>
+                <div class="printdev" ref={el => (this.componentRef = el)}>
+                    <p class="centered">
+                        <img src="http://127.0.0.1:8000/images/logo.png" />
+                        <br />
+                        Kandaan Plaza F7, Markaz
+                        <br />
+                        Jani Babu Barbecue
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="quantity">Q.</th>
+                                <th class="description">Name</th>
+                                <th class="price">$$</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cart.map(c => (
+                                <tr key={c.id}>
+                                    <td class="quantity">
+                                        {" "}
+                                        {c.pivot.quantity}
+                                    </td>
+                                    <td class="description">{c.name}</td>
+                                    <td class="price">
+                                        {c.price * c.pivot.quantity}{" "}
+                                        {window.APP.currency_symbol}
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {cart.map(c => (
-                                    <tr key={c.id}>
-                                        <td class="quantity">
-                                            {" "}
-                                            {c.pivot.quantity}
-                                        </td>
-                                        <td class="description">{c.name}</td>
-                                        <td class="price">
-                                            {c.price * c.pivot.quantity}{" "}
-                                            {window.APP.currency_symbol}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colSpan="2" className="text-right">
-                                        Sub Total:
-                                    </th>
-                                    <th className="text-center">
-                                        {window.APP.currency_symbol}{" "}
-                                        {this.getTotal(cart)}
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th colSpan="2" className="text-right">
-                                        GST {this.state.gst}%:
-                                    </th>
-                                    <th className="text-center">
-                                        {window.APP.currency_symbol}{" "}
-                                        {this.getGstAmount(cart)}
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th colSpan="2" className="text-right">
-                                        Total:
-                                    </th>
-                                    <th className="text-center">
-                                        {window.APP.currency_symbol}{" "}
-                                        {parseInt(this.getTotal(cart)) +
-                                            parseInt(this.getGstAmount(cart))}
-                                    </th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        <p class="centered">
-                            Thanks for your purchase!
-                            <br />
-                            Developed by Abdul Basit
-                            Mobile #: 03115818727
-                        </p>
-                    </div>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>Sub Total:</th>
+                                <th>
+                                    {window.APP.currency_symbol}{" "}
+                                    {this.getTotal(cart)}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>GST {this.state.gst}%:</th>
+                                <th>
+                                    {window.APP.currency_symbol}{" "}
+                                    {this.getGstAmount(cart)}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>Total:</th>
+                                <th>
+                                    {window.APP.currency_symbol}{" "}
+                                    {parseInt(this.getTotal(cart)) +
+                                        parseInt(this.getGstAmount(cart))}
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <p class="centered">
+                        Thanks for your purchase!
+                        <br />
+                        Developed by Abdul Basit Mobile #: 03115818727
+                    </p>
                 </div>
                 <div className="col-md-6 col-lg-4">
                     <div className="row mb-2">

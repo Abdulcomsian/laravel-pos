@@ -5,13 +5,13 @@
 @section('content')
 <style>
     @media print {
-        html, body {
-        width: 100%;
-        height:auto;
-        position:absolute;
-        page-break-after: auto;
-       }
-         td,
+
+        html,
+        body {
+            page-break-after: auto;
+        }
+
+        td,
         th,
         tr,
         table {
@@ -19,12 +19,15 @@
             border-collapse: collapse;
         }
 
-
+        table {
+            width: 80%;
+            margin: 0 auto;
+        }
 
         td.description,
         th.description {
-            width: 100px;
-            max-width: 100px;
+            width: 75px;
+            max-width: 75px;
         }
 
         td.quantity,
@@ -36,8 +39,8 @@
 
         td.price,
         th.price {
-            width: 80px;
-            max-width: 80px;
+            width: 40px;
+            max-width: 40px;
             word-break: break-all;
         }
 
@@ -46,11 +49,11 @@
             align-content: center;
         }
 
-        .ticket {
-            width: 100%;
+        .printdev {
+            width: 1000px;
+            max-width: 1000px;
         }
-      }
-    
+    }
 </style>
 <input type="hidden" id="gst" name="gst" value="{{$gstdata->value}}" />
 <div id="cart"></div>
