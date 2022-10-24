@@ -5,6 +5,11 @@
 @section('content')
 <style>
     @media print {
+        html, body {
+        width: 80mm;
+        height:100%;
+        position:absolute;
+       }
          td,
         th,
         tr,
