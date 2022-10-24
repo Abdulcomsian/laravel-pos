@@ -4,7 +4,8 @@
 
 @section('content')
 <style>
-    td,
+    @media print {
+         td,
     th,
     tr,
     table {
@@ -38,12 +39,13 @@
         text-align: center;
         align-content: center;
     }
-    
 
     .ticket {
         width: 210px;
         max-width: 210px;
     }
+      }
+    
 </style>
 <input type="hidden" id="gst" name="gst" value="{{$gstdata->value}}" />
 <div id="cart"></div>
