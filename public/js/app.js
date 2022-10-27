@@ -69870,7 +69870,7 @@ var Cart = /*#__PURE__*/function (_Component) {
         className: "col"
       }, "Total:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col text-right"
-      }, window.APP.currency_symbol, parseInt(this.getTotal(cart)) + parseInt(this.getGstAmount(cart)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, window.APP.currency_symbol, " ", parseInt(this.getTotal(cart)) + parseInt(this.getGstAmount(cart)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col"
