@@ -197,7 +197,7 @@ class Cart extends Component {
         Swal.fire({
             title: "Received Amount",
             input: "text",
-            inputValue: this.getTotal(this.state.cart),
+            inputValue: parseFloat(parseFloat(this.getTotal(this.state.cart))+parseFloat(this.getGstAmount(this.state.cart))).toFixed(2),
             showCancelButton: true,
             confirmButtonText: "Send",
             showLoaderOnConfirm: true,
@@ -269,7 +269,7 @@ class Cart extends Component {
                                     <td class="description">{c.name}</td>
                                     <td class="price">
                                         {window.APP.currency_symbol}{" "}
-                                        {c.price * c.pivot.quantity}
+                                        {parseFloat(c.price * c.pivot.quantity).toFixed(2)}
                                         
                                     </td>
                                 </tr>
@@ -281,7 +281,7 @@ class Cart extends Component {
                                 <th>Sub Total:</th>
                                 <th>
                                     {window.APP.currency_symbol}{" "}
-                                    {this.getTotal(cart)}
+                                    {parseFloat(this.getTotal(cart)).toFixed(2)}
                                 </th>
                             </tr>
                             <tr>
@@ -297,8 +297,8 @@ class Cart extends Component {
                                 <th>Total:</th>
                                 <th>
                                     {window.APP.currency_symbol}{" "}
-                                    {parseInt(this.getTotal(cart)) +
-                                        parseInt(this.getGstAmount(cart))}
+                                    {parseFloat(parseFloat(this.getTotal(cart)) +
+                                        parseFloat(this.getGstAmount(cart))).toFixed(2)}
                                 </th>
                             </tr>
                         </tfoot>
@@ -414,7 +414,7 @@ class Cart extends Component {
                             <div className="col">Total:</div>
                             <div className="col text-right">
                                 {window.APP.currency_symbol}{" "}
-                                {parseFloat(this.getTotal(cart)+this.getGstAmount(cart)).toFixed(2)}
+                                {parseFloat(parseFloat(this.getTotal(cart))+parseFloat(this.getGstAmount(cart))).toFixed(2)}
                             </div>
                         </div>
                         <div className="row">
