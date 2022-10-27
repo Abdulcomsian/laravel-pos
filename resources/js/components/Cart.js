@@ -413,8 +413,7 @@ class Cart extends Component {
                         <div className="row">
                             <div className="col">Total:</div>
                             <div className="col text-right">
-                                {window.APP.currency_symbol}
-
+                                {window.APP.currency_symbol}{" "}
                                 {parseInt(this.getTotal(cart)) +
                                     parseInt(this.getGstAmount(cart))}
                             </div>
