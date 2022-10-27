@@ -69864,7 +69864,7 @@ var Cart = /*#__PURE__*/function (_Component) {
         className: "col"
       }, "GST ", this.state.gst, "%:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col text-right"
-      }, window.APP.currency_symbol, " ", this.getGstAmount(cart))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, window.APP.currency_symbol, " ", this.getGstAmount(cart).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col"

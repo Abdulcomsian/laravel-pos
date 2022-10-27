@@ -268,8 +268,9 @@ class Cart extends Component {
                                     </td>
                                     <td class="description">{c.name}</td>
                                     <td class="price">
-                                        {c.price * c.pivot.quantity}{" "}
-                                        {window.APP.currency_symbol}
+                                        {window.APP.currency_symbol}{" "}
+                                        {c.price * c.pivot.quantity}
+                                        
                                     </td>
                                 </tr>
                             ))}
@@ -288,7 +289,7 @@ class Cart extends Component {
                                 <th>GST {this.state.gst}%:</th>
                                 <th>
                                     {window.APP.currency_symbol}{" "}
-                                    {this.getGstAmount(cart)}
+                                    {this.getGstAmount(cart).toFixed(2)}
                                 </th>
                             </tr>
                             <tr>
