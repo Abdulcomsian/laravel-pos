@@ -249,7 +249,8 @@ class Cart extends Component {
                         <br />
                         Kandaan Plaza F7, Markaz
                         <br />
-                        Jani Babu Barbecue
+                        Jani Babu Barbecue<br />
+                        03168259551
                     </p>
                     <table>
                         <thead>
