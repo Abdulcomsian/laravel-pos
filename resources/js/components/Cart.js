@@ -406,7 +406,7 @@ class Cart extends Component {
                             <div className="col">GST {this.state.gst}%:</div>
                             <div className="col text-right">
                                 {window.APP.currency_symbol}{" "}
-                                {this.getGstAmount(cart)}
+                                {this.getGstAmount(cart).toFixed(2)}
                             </div>
                         </div>
                         <div className="row">
