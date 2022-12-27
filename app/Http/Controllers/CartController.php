@@ -24,7 +24,8 @@ class CartController extends Controller
             }
         }
         $gstdata = Setting::where('key', 'gst')->first();
-        return view('cart.index', compact('gstdata'));
+        $posCharges = Setting::where('key', 'pos_charges')->first();
+        return view('cart.index', compact('gstdata', 'posCharges'));
     }
 
     public function getCart(Request $request)

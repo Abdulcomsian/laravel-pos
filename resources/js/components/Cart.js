@@ -16,7 +16,12 @@ class Cart extends Component {
             barcode: "",
             search: "",
             customer_id: 1,
-            gst: parseInt($("#gst").val())
+            gst: parseInt($("#gst").val()),
+            posCharges: parseFloat($("#posCharges").val()),
+            paymentCard: false,
+            cardPrice: 0.0,
+            discount: 0.0,
+            discountValue: 0.0
         };
 
         this.loadCart = this.loadCart.bind(this);
@@ -29,6 +34,9 @@ class Cart extends Component {
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.handleSeach = this.handleSeach.bind(this);
         this.setCustomerId = this.setCustomerId.bind(this);
+        this.setCustomerId = this.setCustomerId.bind(this);
+        this.changePosstate = this.changePosstate.bind(this);
+        this.handleDiscount = this.handleDiscount.bind(this);
         this.handleClickSubmit = this.handleClickSubmit.bind(this);
     }
 
@@ -64,11 +72,24 @@ class Cart extends Component {
         axios.get("/admin/cart").then(res => {
             const cart = res.data;
             if (res.data.length > 0) {
+                console.log(res.data[0].pivot.customer_id);
                 this.setState({ customer_id: res.data[0].pivot.customer_id });
                 this.setState({ cart });
+                this.setState({
+                    paymentCard: false,
+                    cardPrice: 0.0,
+                    discount: 0.0,
+                    discountValue: 0.0
+                });
             } else {
-                this.setState({ customer_id: "" });
-                this.setState({ cart: [] });
+                this.setState({ customer_id: 1 });
+                this.setState({
+                    cart: [],
+                    paymentCard: false,
+                    cardPrice: 0.0,
+                    discount: 0.0,
+                    discountValue: 0.0
+                });
             }
         });
     }
@@ -106,14 +127,39 @@ class Cart extends Component {
             });
     }
 
+    handleDiscount(event, cart) {
+        let inputval = event.target.value;
+        let subtotal = cart.map(c => c.pivot.quantity * c.price);
+        let discountamount = (sum(subtotal) / 100) * inputval;
+        this.setState({ discount: discountamount, discountValue: inputval });
+    }
+
     getTotal(cart) {
         const total = cart.map(c => c.pivot.quantity * c.price);
         return sum(total).toFixed(2);
     }
 
+    total(cart) {
+        console.log(this.state.paymentCard);
+        return Number(this.getTotal(cart)) + this.getGstAmount(cart);
+    }
+
     getGstAmount(cart) {
         let subtotal = cart.map(c => c.pivot.quantity * c.price);
         return (sum(subtotal) / 100) * this.state.gst;
+    }
+
+    getPosCharges(cart) {
+        let subtotal = cart.map(c => c.pivot.quantity * c.price);
+        return (sum(subtotal) / 100) * this.state.posCharges;
+    }
+    changePosstate(cart) {
+        const posState = this.state.paymentCard ? false : true;
+        const posCharges = posState ? this.getPosCharges(cart) : 0;
+        this.setState({
+            paymentCard: posState,
+            cardPrice: posCharges
+        });
     }
 
     handleClickDelete(product_id) {
@@ -197,7 +243,11 @@ class Cart extends Component {
         Swal.fire({
             title: "Received Amount",
             input: "text",
-            inputValue: parseFloat(parseFloat(this.getTotal(this.state.cart))+parseFloat(this.getGstAmount(this.state.cart))).toFixed(2),
+            inputValue: parseFloat(
+                this.total(this.state.cart) +
+                    this.state.cardPrice -
+                    this.state.discount
+            ).toFixed(2),
             showCancelButton: true,
             confirmButtonText: "Send",
             showLoaderOnConfirm: true,
@@ -205,10 +255,12 @@ class Cart extends Component {
                 return axios
                     .post("/admin/orders", {
                         customer_id: this.state.customer_id,
-                        amount
+                        amount,
+                        cardPrice: this.state.cardPrice,
+                        discount: this.state.discount,
+                        discountValue: this.state.discountValue
                     })
                     .then(res => {
-                        console.log("print");
                         $(".printdev").addClass("active");
                         document.getElementById("printbtn").click();
                         this.loadCart();
@@ -249,7 +301,8 @@ class Cart extends Component {
                         <br />
                         Kandaan Plaza F7, Markaz
                         <br />
-                        Jani Babu Barbecue<br />
+                        Jani Babu Barbecue
+                        <br />
                         03168259551
                     </p>
                     <table>
@@ -270,8 +323,9 @@ class Cart extends Component {
                                     <td class="description">{c.name}</td>
                                     <td class="price">
                                         {window.APP.currency_symbol}{" "}
-                                        {parseFloat(c.price * c.pivot.quantity).toFixed(2)}
-                                        
+                                        {parseFloat(
+                                            c.price * c.pivot.quantity
+                                        ).toFixed(2)}
                                     </td>
                                 </tr>
                             ))}
@@ -295,11 +349,30 @@ class Cart extends Component {
                             </tr>
                             <tr>
                                 <th></th>
+                                <th>POS Charges {this.state.posCharges}%:</th>
+                                <th>
+                                    {window.APP.currency_symbol}{" "}
+                                    {this.getPosCharges(cart).toFixed(2)}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>Discount {this.state.discountValue}%:</th>
+                                <th>
+                                    {window.APP.currency_symbol}{" "}
+                                    {this.state.discount}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th></th>
                                 <th>Total:</th>
                                 <th>
                                     {window.APP.currency_symbol}{" "}
-                                    {parseFloat(parseFloat(this.getTotal(cart)) +
-                                        parseFloat(this.getGstAmount(cart))).toFixed(2)}
+                                    {parseFloat(
+                                        this.total(cart) +
+                                            this.state.cardPrice -
+                                            this.state.discount
+                                    ).toFixed(2)}
                                 </th>
                             </tr>
                         </tfoot>
@@ -396,6 +469,46 @@ class Cart extends Component {
                                 </table>
                             </div>
                         </div>
+                        <div className="row">
+                            <div className="form-check">
+                                <div class="col">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        name="paymentType"
+                                        id="paymentType"
+                                        checked={this.state.paymentCard}
+                                        onClick={() =>
+                                            this.changePosstate(cart)
+                                        }
+                                    />
+                                    <label
+                                        className="form-check-label"
+                                        for="paymentType"
+                                    >
+                                        Payment with Card
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row" style={{ height: "38px" }}>
+                            <div className="form-check">
+                                <div className="col">
+                                    <input
+                                        className="form-check-input"
+                                        type="number"
+                                        name="discount"
+                                        id="discount"
+                                        step="0.01"
+                                        placeholder="Enter Discount Rate"
+                                        value={this.state.discountValue}
+                                        onChange={e =>
+                                            this.handleDiscount(e, cart)
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="row">
                             <div className="col">Sub Total:</div>
@@ -412,10 +525,34 @@ class Cart extends Component {
                             </div>
                         </div>
                         <div className="row">
+                            <div className="col">
+                                POS Charges {this.state.posCharges}%:
+                            </div>
+                            <div className="col text-right">
+                                {window.APP.currency_symbol}{" "}
+                                {this.state.paymentCard
+                                    ? this.getPosCharges(cart).toFixed(2)
+                                    : 0.0}
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                Discount {this.state.discountValue}%:
+                            </div>
+                            <div className="col text-right">
+                                {window.APP.currency_symbol}{" "}
+                                {this.state.discount.toFixed(2)}
+                            </div>
+                        </div>
+                        <div className="row">
                             <div className="col">Total:</div>
                             <div className="col text-right">
                                 {window.APP.currency_symbol}{" "}
-                                {parseFloat(parseFloat(this.getTotal(cart))+parseFloat(this.getGstAmount(cart))).toFixed(2)}
+                                {parseFloat(
+                                    this.total(cart) +
+                                        this.state.cardPrice -
+                                        this.state.discount
+                                ).toFixed(2)}
                             </div>
                         </div>
                         <div className="row">

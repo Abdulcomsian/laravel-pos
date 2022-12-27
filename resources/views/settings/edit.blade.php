@@ -56,6 +56,15 @@
             </span>
             @enderror
         </div>
+        <div class="form-group">
+            <label for="pos_charges">POS Charges%</label>
+            <input type="text" name="pos_charges" class="form-control @error('pos_charges') is-invalid @enderror" id="pos_charges" placeholder="Enter Tax in percentage" value="{{ old('gst', config('settings.pos_charges')) }}">
+            @error('pos_charges')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
         <button type="submit" class="btn common__btn">Change Setting</button>
     </form>
 </div>

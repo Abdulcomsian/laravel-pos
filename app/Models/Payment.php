@@ -11,5 +11,8 @@ class Payment extends Model
         'order_id',
         'user_id',
         'gst',
+        'pos_charges',
+        'discount',
+        'discountPrice'
     ];
 }

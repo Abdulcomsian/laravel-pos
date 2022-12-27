@@ -101,7 +101,8 @@
         height: auto;
     }
 </style>
-<input type="hidden" id="gst" name="gst" value="{{$gstdata->value}}" />
+<input type="hidden" id="gst" name="gst" value="{{$gstdata->value ?? ''}}" />
+<input type="hidden" id="posCharges" value="{{$posCharges->value ?? ''}}" />
 <div id="cart"></div>
 
 @endsection

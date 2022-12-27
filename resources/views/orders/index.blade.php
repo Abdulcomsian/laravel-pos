@@ -39,15 +39,18 @@
                     <th>Sub Total</th>
                     <th>GST%</th>
                     <th>Gst Amount</th>
+                    <th>Pos Charges%</th>
+                    <th>Pos Amount</th>
+                    <th>Discount</th>
+                    <th>Discount Price</th>
                     <th>Total</th>
-                    <!-- <th>Received Amount</th> -->
                     <th>Status</th>
-                    <th>To Pay</th>
+                    <!-- <th>To Pay</th> -->
                     <th>Created At</th>
                 </tr>
             </thead>
             <tbody>
-                @php $totalgstamount=0;@endphp
+                @php $totalgstamount=0;$totalposamount=0;$totalDiscount=0;@endphp
                 @foreach ($orders as $order)
                 <tr>
                     <td>{{$order->id}}</td>
@@ -61,7 +64,21 @@
                         @endphp
                         {{ config('settings.currency_symbol') }} {{$gstamount}}
                     </td>
-                    <td>{{ config('settings.currency_symbol') }} {{ number_format($order->total()+$gstamount, 2);}}</td>
+                    <td>{{$order->pos_charges}}%</td>
+                    <td>
+                        @php
+                        $posamount=$order->total()/100*$order->pos_charges;
+                        $totalposamount=$totalposamount+$posamount;
+                        @endphp
+                        {{ config('settings.currency_symbol') }} {{number_format($posamount,2)}}
+                    </td>
+                    <td>{{$order->discount}}%</td>
+                    <td>
+                        {{ config('settings.currency_symbol') }} {{number_format($order->discountPrice,2)}}
+                        @php $totalDiscount=$totalDiscount+$order->discountPrice;@endphp
+                    </td>
+
+                    <td>{{ config('settings.currency_symbol') }} {{ number_format($order->total()+$gstamount+$posamount-$order->discountPrice, 2);}}</td>
                     <!-- <td>{{ config('settings.currency_symbol') }} {{$order->formattedReceivedAmount()}}</td> -->
                     <td>
                         @if($order->receivedAmount() == 0)
@@ -74,7 +91,7 @@
                             <span class="badge badge-info">Change</span>
                             @endif
                     </td>
-                    <td>{{config('settings.currency_symbol')}} {{number_format($order->total() - $order->receivedAmount(), 2)}}</td>
+                    {{--<td>{{config('settings.currency_symbol')}} {{number_format($order->total() - $order->receivedAmount(), 2)}}</td>--}}
                     <td>{{$order->created_at}}</td>
                 </tr>
                 @endforeach
@@ -85,9 +102,12 @@
                     <th></th>
                     <th>{{ config('settings.currency_symbol') }} {{ number_format($total, 2) }}</th>
                     <th></th>
-                    <th>{{ config('settings.currency_symbol') }} {{$totalgstamount}}</th>
-                    <th>{{ config('settings.currency_symbol') }} {{ number_format($total+$totalgstamount, 2) }}</th>
-                    <!-- <th>{{ config('settings.currency_symbol') }} {{ number_format($receivedAmount, 2) }}</th> -->
+                    <th>{{ config('settings.currency_symbol') }} {{number_format($totalgstamount,2)}}</th>
+                    <th></th>
+                    <th>{{ config('settings.currency_symbol') }} {{number_format($totalposamount,2)}}</th>
+                    <th></th>
+                    <th>{{ config('settings.currency_symbol') }} {{number_format($totalDiscount,2)}}</th>
+                    <th>{{ config('settings.currency_symbol') }} {{ number_format($total+$totalgstamount+$totalposamount-$totalDiscount, 2) }}</th>
                     <th></th>
                     <th></th>
                     <th></th>

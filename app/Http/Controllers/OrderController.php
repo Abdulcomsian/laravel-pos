@@ -36,10 +36,14 @@ class OrderController extends Controller
     public function store(OrderStoreRequest $request)
     {
         $gst = Setting::where('key', 'gst')->first();
+        $posCharges = Setting::where('key', 'pos_charges')->first();
         $order = Order::create([
             'customer_id' => $request->customer_id,
             'user_id' => $request->user()->id,
             'gst' => $gst->value ?? 0,
+            'discount' => $request->discountValue,
+            'discountPrice' => $request->discount,
+            'pos_charges' => $request->cardPrice > 0 ?  $posCharges->value : 0
         ]);
 
         $cart = $request->user()->cart()->where('customer_id', $request->customer_id)->get();
@@ -58,6 +62,9 @@ class OrderController extends Controller
             'amount' => $request->amount,
             'user_id' => $request->user()->id,
             'gst' => $gst->value ?? 0,
+            'discount' => $request->discountValue,
+            'discountPrice' => $request->discount,
+            'pos_charges' => $request->cardPrice > 0 ?  $posCharges->value : 0
         ]);
         return 'success';
     }

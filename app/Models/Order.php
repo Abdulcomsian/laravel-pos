@@ -10,6 +10,9 @@ class Order extends Model
         'customer_id',
         'user_id',
         'gst',
+        'pos_charges',
+        'discount',
+        'discountPrice'
     ];
 
     public function items()

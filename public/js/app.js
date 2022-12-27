@@ -69451,7 +69451,12 @@ var Cart = /*#__PURE__*/function (_Component) {
       barcode: "",
       search: "",
       customer_id: 1,
-      gst: parseInt(jquery__WEBPACK_IMPORTED_MODULE_6___default()("#gst").val())
+      gst: parseInt(jquery__WEBPACK_IMPORTED_MODULE_6___default()("#gst").val()),
+      posCharges: parseFloat(jquery__WEBPACK_IMPORTED_MODULE_6___default()("#posCharges").val()),
+      paymentCard: false,
+      cardPrice: 0.0,
+      discount: 0.0,
+      discountValue: 0.0
     };
     _this.loadCart = _this.loadCart.bind(_assertThisInitialized(_this));
     _this.handleOnChangeBarcode = _this.handleOnChangeBarcode.bind(_assertThisInitialized(_this));
@@ -69462,6 +69467,9 @@ var Cart = /*#__PURE__*/function (_Component) {
     _this.handleChangeSearch = _this.handleChangeSearch.bind(_assertThisInitialized(_this));
     _this.handleSeach = _this.handleSeach.bind(_assertThisInitialized(_this));
     _this.setCustomerId = _this.setCustomerId.bind(_assertThisInitialized(_this));
+    _this.setCustomerId = _this.setCustomerId.bind(_assertThisInitialized(_this));
+    _this.changePosstate = _this.changePosstate.bind(_assertThisInitialized(_this));
+    _this.handleDiscount = _this.handleDiscount.bind(_assertThisInitialized(_this));
     _this.handleClickSubmit = _this.handleClickSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -69520,6 +69528,8 @@ var Cart = /*#__PURE__*/function (_Component) {
         var cart = res.data;
 
         if (res.data.length > 0) {
+          console.log(res.data[0].pivot.customer_id);
+
           _this4.setState({
             customer_id: res.data[0].pivot.customer_id
           });
@@ -69527,13 +69537,24 @@ var Cart = /*#__PURE__*/function (_Component) {
           _this4.setState({
             cart: cart
           });
+
+          _this4.setState({
+            paymentCard: false,
+            cardPrice: 0.0,
+            discount: 0.0,
+            discountValue: 0.0
+          });
         } else {
           _this4.setState({
-            customer_id: ""
+            customer_id: 1
           });
 
           _this4.setState({
-            cart: []
+            cart: [],
+            paymentCard: false,
+            cardPrice: 0.0,
+            discount: 0.0,
+            discountValue: 0.0
           });
         }
       });
@@ -69581,6 +69602,19 @@ var Cart = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "handleDiscount",
+    value: function handleDiscount(event, cart) {
+      var inputval = event.target.value;
+      var subtotal = cart.map(function (c) {
+        return c.pivot.quantity * c.price;
+      });
+      var discountamount = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(subtotal) / 100 * inputval;
+      this.setState({
+        discount: discountamount,
+        discountValue: inputval
+      });
+    }
+  }, {
     key: "getTotal",
     value: function getTotal(cart) {
       var total = cart.map(function (c) {
@@ -69589,12 +69623,36 @@ var Cart = /*#__PURE__*/function (_Component) {
       return Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(total).toFixed(2);
     }
   }, {
+    key: "total",
+    value: function total(cart) {
+      console.log(this.state.paymentCard);
+      return Number(this.getTotal(cart)) + this.getGstAmount(cart);
+    }
+  }, {
     key: "getGstAmount",
     value: function getGstAmount(cart) {
       var subtotal = cart.map(function (c) {
         return c.pivot.quantity * c.price;
       });
       return Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(subtotal) / 100 * this.state.gst;
+    }
+  }, {
+    key: "getPosCharges",
+    value: function getPosCharges(cart) {
+      var subtotal = cart.map(function (c) {
+        return c.pivot.quantity * c.price;
+      });
+      return Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(subtotal) / 100 * this.state.posCharges;
+    }
+  }, {
+    key: "changePosstate",
+    value: function changePosstate(cart) {
+      var posState = this.state.paymentCard ? false : true;
+      var posCharges = posState ? this.getPosCharges(cart) : 0;
+      this.setState({
+        paymentCard: posState,
+        cardPrice: posCharges
+      });
     }
   }, {
     key: "handleClickDelete",
@@ -69721,16 +69779,18 @@ var Cart = /*#__PURE__*/function (_Component) {
       sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
         title: "Received Amount",
         input: "text",
-        inputValue: parseFloat(parseFloat(this.getTotal(this.state.cart)) + parseFloat(this.getGstAmount(this.state.cart))).toFixed(2),
+        inputValue: parseFloat(this.total(this.state.cart) + this.state.cardPrice - this.state.discount).toFixed(2),
         showCancelButton: true,
         confirmButtonText: "Send",
         showLoaderOnConfirm: true,
         preConfirm: function preConfirm(amount) {
           return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/admin/orders", {
             customer_id: _this9.state.customer_id,
-            amount: amount
+            amount: amount,
+            cardPrice: _this9.state.cardPrice,
+            discount: _this9.state.discount,
+            discountValue: _this9.state.discountValue
           }).then(function (res) {
-            console.log("print");
             jquery__WEBPACK_IMPORTED_MODULE_6___default()(".printdev").addClass("active");
             document.getElementById("printbtn").click();
 
@@ -69779,7 +69839,7 @@ var Cart = /*#__PURE__*/function (_Component) {
         "class": "centered"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         src: "http://127.0.0.1:8000/images/logo.png"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Kandaan Plaza F7, Markaz", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Jani Babu Barbecue"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Kandaan Plaza F7, Markaz", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Jani Babu Barbecue", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "03168259551"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
         "class": "quantity"
       }, "Q."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
         "class": "description"
@@ -69795,7 +69855,7 @@ var Cart = /*#__PURE__*/function (_Component) {
         }, c.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
           "class": "price"
         }, window.APP.currency_symbol, " ", parseFloat(c.price * c.pivot.quantity).toFixed(2)));
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tfoot", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sub Total:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", parseFloat(this.getTotal(cart)).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "GST ", this.state.gst, "%:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", this.getGstAmount(cart).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Total:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", parseFloat(parseFloat(this.getTotal(cart)) + parseFloat(this.getGstAmount(cart))).toFixed(2))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tfoot", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sub Total:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", parseFloat(this.getTotal(cart)).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "GST ", this.state.gst, "%:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", this.getGstAmount(cart).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "POS Charges ", this.state.posCharges, "%:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", this.getPosCharges(cart).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Discount ", this.state.discountValue, "%:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", this.state.discount)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Total:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, window.APP.currency_symbol, " ", parseFloat(this.total(cart) + this.state.cardPrice - this.state.discount).toFixed(2))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         "class": "centered"
       }, "Thanks for your purchase!", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Developed by Abdul Basit Mobile #: 03115818727")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
@@ -69855,6 +69915,44 @@ var Cart = /*#__PURE__*/function (_Component) {
       }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-check"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "col"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "form-check-input",
+        type: "checkbox",
+        name: "paymentType",
+        id: "paymentType",
+        checked: this.state.paymentCard,
+        onClick: function onClick() {
+          return _this10.changePosstate(cart);
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "form-check-label",
+        "for": "paymentType"
+      }, "Payment with Card")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row",
+        style: {
+          height: "38px"
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-check"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "form-check-input",
+        type: "number",
+        name: "discount",
+        id: "discount",
+        step: "0.01",
+        placeholder: "Enter Discount Rate",
+        value: this.state.discountValue,
+        onChange: function onChange(e) {
+          return _this10.handleDiscount(e, cart);
+        }
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col"
       }, "Sub Total:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col text-right"
@@ -69868,9 +69966,21 @@ var Cart = /*#__PURE__*/function (_Component) {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col"
+      }, "POS Charges ", this.state.posCharges, "%:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col text-right"
+      }, window.APP.currency_symbol, " ", this.state.paymentCard ? this.getPosCharges(cart).toFixed(2) : 0.0)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col"
+      }, "Discount ", this.state.discountValue, "%:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col text-right"
+      }, window.APP.currency_symbol, " ", this.state.discount.toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col"
       }, "Total:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col text-right"
-      }, window.APP.currency_symbol, " ", parseFloat(parseFloat(this.getTotal(cart)) + parseFloat(this.getGstAmount(cart))).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, window.APP.currency_symbol, " ", parseFloat(this.total(cart) + this.state.cardPrice - this.state.discount).toFixed(2))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col"
